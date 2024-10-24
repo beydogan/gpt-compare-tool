@@ -53,8 +53,15 @@ const InfoBanner = ({ onDismiss }) => {
 const Footer = () => (
   <footer className="bg-white rounded-lg p-6 shadow-md">
     <div className="max-w-4xl mx-auto flex justify-between items-center">
-      <div className="text-sm text-gray-600">
-        Built with ❤️ for the AI community
+      <div className="flex text-sm text-gray-600">
+        Built by&nbsp;<a
+          href="https://github.com/beydogan"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-blue-600 hover:text-gray-900 flex items-center"
+        >
+          beydogan
+        </a>
       </div>
       <div className="flex items-center space-x-4">
         <a
@@ -97,12 +104,9 @@ const ModelComparer = () => {
   const availableModels = [
     { id: 'gpt-4o', name: 'GPT 4o', selected: false},
     { id: 'gpt-4o-2024-05-13', name: 'GPT 4o 2024-05-13', selected: false},
-    { id: 'chatgpt-4o-latest', name: 'chatgpt-4o-latest', selected: false},
     { id: 'gpt-4o-mini', name: 'GPT 4o mini', selected: false},
-    { id: 'gpt-4-turbo-preview', name: 'GPT-4 Turbo', selected: false },
-    { id: 'gpt-4', name: 'GPT-4', selected: false },
-    { id: 'gpt-3.5-turbo', name: 'GPT-3.5 Turbo', selected: true },
-    { id: 'gpt-3.5-turbo-16k', name: 'GPT-3.5 Turbo 16K', selected: false },
+    { id: 'gpt-4-turbo-preview', name: 'GPT 4 Turbo', selected: false },
+    { id: 'gpt-4', name: 'GPT 4', selected: false }
   ];
 
   const [selectedModels, setSelectedModels] = useState(() => {

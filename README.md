@@ -1,70 +1,83 @@
-# Getting Started with Create React App
+# GPT Model Compare Tool
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A simple web application that allows you to compare responses from different OpenAI models side by side. Test your prompts across multiple models to understand how they perform differently.
 
-## Available Scripts
+![GPT Model Comparer Screenshot](screenshot.png)
 
-In the project directory, you can run:
+## Features
 
-### `npm start`
+- 🔄 Compare responses from multiple OpenAI models simultaneously
+- 🔒 Secure API key handling (stored only in browser's localStorage)
+- 📝 Save prompt history for future reference
+- 🎨 Clean, responsive UI
+- 💾 All data stored locally in your browser
+- 🚀 Zero server requirements - runs entirely in the browser
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Getting Started
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Prerequisites
 
-### `npm test`
+- Node.js (v16 or higher)
+- npm or yarn
+- OpenAI API key ([Get one here](https://platform.openai.com/api-keys))
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Installation & Running Locally
+ 
+1. Clone the repository:
+```bash
+git clone https://github.com/beydogan/
+cd openai-model-comparer
+```
 
-### `npm run build`
+2. Install dependencies:
+```bash
+npm install
+# or
+yarn
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+3. Start the development server:
+```bash
+npm run dev
+# or
+yarn dev
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+4. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Usage
 
-### `npm run eject`
+1. Enter your OpenAI API key in the designated field
+2. Select the models you want to compare
+3. Enter your prompt
+4. Click "Compare Models" to see the responses
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Your API key and prompt history are stored locally in your browser's localStorage for convenience and privacy.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Built With
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+- React
+- Tailwind CSS
+- Lucide Icons
+- OpenAI API
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Privacy & Security
 
-## Learn More
+- Your OpenAI API key is stored only in your browser's localStorage
+- API requests are made directly to OpenAI from your browser
+- No data is transmitted to any third-party servers
+- All history and settings are stored locally in your browser
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Contributing
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-### Code Splitting
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## License
 
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
