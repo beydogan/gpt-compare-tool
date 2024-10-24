@@ -28,8 +28,8 @@ A simple web application that allows you to compare responses from different Ope
  
 1. Clone the repository:
 ```bash
-git clone https://github.com/beydogan/
-cd openai-model-comparer
+git clone https://github.com/beydogan/gpt-compare-tool
+cd gpt-compare-tool
 ```
 
 2. Install dependencies:
