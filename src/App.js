@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { SaveIcon, TrashIcon, Send, XCircle } from 'lucide-react';
+import { SaveIcon, TrashIcon, Send, XCircle, Github, Twitter } from 'lucide-react';
 
 // Simple Alert Component
 const Alert = ({ message, onClose }) => (
@@ -14,6 +14,68 @@ const Alert = ({ message, onClose }) => (
       </button>
     )}
   </div>
+);
+
+const InfoBanner = ({ onDismiss }) => {
+  const [isVisible, setIsVisible] = useState(() => {
+    return localStorage.getItem('infoBannerDismissed') !== 'true';
+  });
+
+  const handleDismiss = () => {
+    localStorage.setItem('infoBannerDismissed', 'true');
+    setIsVisible(false);
+    if (onDismiss) onDismiss();
+  };
+
+  if (!isVisible) return null;
+
+  return (
+    <div className="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6 rounded-md">
+      <div className="flex justify-between items-start">
+        <div className="flex-1">
+          <p className="text-blue-700 text-sm">
+            This project is open source and prioritizes your privacy. Your API key is only transmitted directly to OpenAI and is stored locally in your browser. All prompt history and settings are kept in your browser's localStorage. 
+            You can it out on GitHub source code.
+          </p>
+        </div>
+        <button
+          onClick={handleDismiss}
+          className="text-gray-500 hover:text-gray-700 ml-4"
+        >
+          <XCircle className="h-5 w-5" />
+        </button>
+      </div>
+    </div>
+  );
+};
+
+
+const Footer = () => (
+  <footer className="bg-white rounded-lg p-6 shadow-md">
+    <div className="max-w-4xl mx-auto flex justify-between items-center">
+      <div className="text-sm text-gray-600">
+        Built with ❤️ for the AI community
+      </div>
+      <div className="flex items-center space-x-4">
+        <a
+          href="https://github.com/beydogan/gpt-compare-tool"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-gray-600 hover:text-gray-900 flex items-center"
+        >
+          <Github className="h-5 w-5 mr-1" />
+        </a>
+        <a
+          href="https://x.com/beydogan_"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-gray-600 hover:text-gray-900 flex items-center"
+        >
+          <Twitter className="h-5 w-5 mr-1" />
+        </a>
+      </div>
+    </div>
+  </footer>
 );
 
 const ModelComparer = () => {
@@ -207,6 +269,7 @@ const ModelComparer = () => {
       {/* Main Content */}
       <div className="flex-1 p-8 overflow-y-auto">
         <div className="max-w-4xl mx-auto space-y-6">
+          <InfoBanner />
           {error && (
             <Alert 
               message={error} 
@@ -286,6 +349,8 @@ const ModelComparer = () => {
               ))}
             </div>
           )}
+
+          <Footer />
         </div>
       </div>
     </div>
