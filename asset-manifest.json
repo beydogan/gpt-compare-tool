@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/gpt-compare-tool/static/css/main.6d3bf3b0.css",
+    "main.js": "/gpt-compare-tool/static/js/main.9b42f108.js",
+    "static/js/453.9a5e83f2.chunk.js": "/gpt-compare-tool/static/js/453.9a5e83f2.chunk.js",
+    "index.html": "/gpt-compare-tool/index.html",
+    "main.6d3bf3b0.css.map": "/gpt-compare-tool/static/css/main.6d3bf3b0.css.map",
+    "main.9b42f108.js.map": "/gpt-compare-tool/static/js/main.9b42f108.js.map",
+    "453.9a5e83f2.chunk.js.map": "/gpt-compare-tool/static/js/453.9a5e83f2.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.6d3bf3b0.css",
+    "static/js/main.9b42f108.js"
+  ]
+}
