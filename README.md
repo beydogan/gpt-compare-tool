@@ -2,6 +2,9 @@
 
 A simple web application that allows you to compare responses from different OpenAI models side by side. Test your prompts across multiple models to understand how they perform differently.
 
+[Go to the tool](https://beydogan.github.io/gpt-compare-tool/)
+
+
 ![GPT Model Comparer Screenshot](screenshot.png)
 
 ## Features
