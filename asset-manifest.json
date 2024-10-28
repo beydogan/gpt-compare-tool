@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/gpt-compare-tool/static/css/main.5a794f42.css",
-    "main.js": "/gpt-compare-tool/static/js/main.d9deb94a.js",
+    "main.js": "/gpt-compare-tool/static/js/main.4482225b.js",
     "static/js/453.9a5e83f2.chunk.js": "/gpt-compare-tool/static/js/453.9a5e83f2.chunk.js",
     "module.wasm": "/gpt-compare-tool/35a3c0095df5b3fe019d.module.wasm",
     "index.html": "/gpt-compare-tool/index.html",
     "main.5a794f42.css.map": "/gpt-compare-tool/static/css/main.5a794f42.css.map",
-    "main.d9deb94a.js.map": "/gpt-compare-tool/static/js/main.d9deb94a.js.map",
+    "main.4482225b.js.map": "/gpt-compare-tool/static/js/main.4482225b.js.map",
     "453.9a5e83f2.chunk.js.map": "/gpt-compare-tool/static/js/453.9a5e83f2.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.5a794f42.css",
-    "static/js/main.d9deb94a.js"
+    "static/js/main.4482225b.js"
   ]
 }
