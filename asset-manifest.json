@@ -1,15 +1,16 @@
 {
   "files": {
-    "main.css": "/gpt-compare-tool/static/css/main.6d3bf3b0.css",
-    "main.js": "/gpt-compare-tool/static/js/main.9b42f108.js",
+    "main.css": "/gpt-compare-tool/static/css/main.5a794f42.css",
+    "main.js": "/gpt-compare-tool/static/js/main.7b657962.js",
     "static/js/453.9a5e83f2.chunk.js": "/gpt-compare-tool/static/js/453.9a5e83f2.chunk.js",
+    "module.wasm": "/gpt-compare-tool/35a3c0095df5b3fe019d.module.wasm",
     "index.html": "/gpt-compare-tool/index.html",
-    "main.6d3bf3b0.css.map": "/gpt-compare-tool/static/css/main.6d3bf3b0.css.map",
-    "main.9b42f108.js.map": "/gpt-compare-tool/static/js/main.9b42f108.js.map",
+    "main.5a794f42.css.map": "/gpt-compare-tool/static/css/main.5a794f42.css.map",
+    "main.7b657962.js.map": "/gpt-compare-tool/static/js/main.7b657962.js.map",
     "453.9a5e83f2.chunk.js.map": "/gpt-compare-tool/static/js/453.9a5e83f2.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.6d3bf3b0.css",
-    "static/js/main.9b42f108.js"
+    "static/css/main.5a794f42.css",
+    "static/js/main.7b657962.js"
   ]
 }
