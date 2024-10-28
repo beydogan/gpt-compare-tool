@@ -1,97 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { SaveIcon, TrashIcon, Send, XCircle, Github, Twitter } from 'lucide-react';
-
-// Simple Alert Component
-const Alert = ({ message, onClose }) => (
-  <div className="bg-red-50 border-l-4 border-red-500 p-4 mb-4 flex justify-between items-center">
-    <div className="flex items-center">
-      <XCircle className="h-5 w-5 text-red-500 mr-2" />
-      <span className="text-red-700">{message}</span>
-    </div>
-    {onClose && (
-      <button onClick={onClose} className="text-red-500 hover:text-red-700">
-        <XCircle className="h-4 w-4" />
-      </button>
-    )}
-  </div>
-);
-
-const InfoBanner = ({ onDismiss }) => {
-  const [isVisible, setIsVisible] = useState(() => {
-    return localStorage.getItem('infoBannerDismissed') !== 'true';
-  });
-
-  const handleDismiss = () => {
-    localStorage.setItem('infoBannerDismissed', 'true');
-    setIsVisible(false);
-    if (onDismiss) onDismiss();
-  };
-
-  if (!isVisible) return null;
-
-  return (
-    <div className="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6 rounded-md">
-      <div className="flex justify-between items-start">
-        <div className="flex-1">
-        <p className="text-blue-700 text-sm">
-          This project is open source and prioritizes your privacy.
-          Your API key is only transmitted directly to OpenAI and is stored locally in your browser.
-          All prompt history and settings are kept in your browser's localStorage.
-          You can check the code out on&nbsp;
-          <a
-            href="https://github.com/beydogan/gpt-compare-tool"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-600 font-bold hover:text-blue-800 underline"
-          >GitHub</a>.
-        </p>
-        </div>
-        <button
-          onClick={handleDismiss}
-          className="text-gray-500 hover:text-gray-700 ml-4"
-        >
-          <XCircle className="h-5 w-5" />
-        </button>
-      </div>
-    </div>
-  );
-};
-
-
-const Footer = () => (
-  <footer className="bg-white rounded-lg p-6 shadow-md">
-    <div className="max-w-4xl mx-auto flex justify-between items-center">
-      <div className="flex text-sm text-gray-600">
-        Built by&nbsp;<a
-          href="https://github.com/beydogan"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-blue-600 hover:text-gray-900 flex items-center"
-        >
-          beydogan
-        </a>
-      </div>
-      <div className="flex items-center space-x-4">
-        <a
-          href="https://github.com/beydogan/gpt-compare-tool"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-gray-600 hover:text-gray-900 flex items-center"
-        >
-          <Github className="h-5 w-5 mr-1" />
-        </a>
-        <a
-          href="https://x.com/beydogan_"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-gray-600 hover:text-gray-900 flex items-center"
-        >
-          <Twitter className="h-5 w-5 mr-1" />
-        </a>
-      </div>
-    </div>
-  </footer>
-);
+import React, { useState, useEffect, useCallback } from 'react';
+import { TrashIcon, Send, XCircle, Github, Twitter } from 'lucide-react';
+import { Footer } from './components/Footer';
+import { InfoBanner } from './components/InfoBanner';
+import { Alert } from './components/Alert';
+import ModelSelector from './components/ModelSelector';
+import debounce from 'lodash/debounce';
+import { countTokens } from './utils';
 
 const ModelComparer = () => {
   const [apiKey, setApiKey] = useState(() => localStorage.getItem('openai_api_key') || '');
@@ -100,6 +14,7 @@ const ModelComparer = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [selectedHistoryItem, setSelectedHistoryItem] = useState(null);
+  const [tokenCount, setTokenCount] = useState(0);
   const [history, setHistory] = useState(() => {
     try {
       const savedHistory = JSON.parse(localStorage.getItem('prompt_history')) || [];
@@ -129,6 +44,35 @@ const ModelComparer = () => {
       return availableModels;
     }
   });
+
+  const countTokensCallback = useCallback(
+    debounce(async (newPrompt) => {
+      if (!newPrompt) {
+        setTokenCount(0);
+        return;
+      }
+
+      try {
+        const count = await countTokens(newPrompt, 'gpt-4');
+        console.log('Token count:', count);
+        setTokenCount(count);
+      } catch (error) {
+        console.error('Error calculating tokens:', error);
+        setTokenCount(0);
+      }
+    }, 500),
+    [prompt]
+  );
+
+  useEffect(() => {
+    countTokensCallback(prompt);
+  }, [prompt, countTokensCallback]);
+
+  useEffect(() => {
+    return () => {
+      countTokensCallback.cancel();
+    };
+  }, [countTokensCallback]);
 
   useEffect(() => {
     localStorage.setItem('openai_api_key', apiKey);
@@ -169,7 +113,7 @@ const ModelComparer = () => {
 
     try {
       const selectedModelIds = selectedModels.filter(m => m.selected);
-      for (const model of selectedModelIds) {
+      const promises = selectedModelIds.map(async (model) => {
         try {
           const response = await fetch('https://api.openai.com/v1/chat/completions', {
             method: 'POST',
@@ -183,38 +127,41 @@ const ModelComparer = () => {
               temperature: 0.7,
             }),
           });
-
+          
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
           }
-
+          
           const data = await response.json();
           if (data.error) {
-            newResults.push({
+            return {
               model: model.name,
               response: `Error: ${data.error.message || 'Unknown error occurred'}`,
+              usage: { completion: data.usage.completion_tokens, prompt: data.usage.prompt_tokens },
               timestamp: new Date().toISOString(),
               isError: true,
-            });
-          } else {
-            newResults.push({
-              model: model.name,
-              response: data.choices[0]?.message?.content || 'No response content',
-              timestamp: new Date().toISOString(),
-              isError: false,
-            });
+            };
           }
-        } catch (error) {
-          setError(error.message || 'An unexpected error occurred');
 
-          newResults.push({
+          return {
+            model: model.name,
+            response: data.choices[0]?.message?.content || 'No response content',
+            usage: { completion: data.usage.completion_tokens, prompt: data.usage.prompt_tokens },
+            timestamp: new Date().toISOString(),
+            isError: false,
+          };
+        } catch (error) {
+          return {
             model: model.name,
             response: `Error: ${error.message || 'Failed to fetch response'}`,
+            usage: { completion: 0, prompt: 0 },
             timestamp: new Date().toISOString(),
             isError: true,
-          });
+          };
         }
-      }
+      });
+
+      const newResults = await Promise.all(promises);
 
       let item = { 
         prompt, 
@@ -307,24 +254,19 @@ const ModelComparer = () => {
             {/* Model Selection */}
             <div className="mb-4">
               <label className="block text-sm font-medium mb-2">Select Models to Compare</label>
-              <div className="space-y-2">
-                {selectedModels.map((model) => (
-                  <label key={model.id} className="flex items-center space-x-2">
-                    <input
-                      type="checkbox"
-                      checked={model.selected}
-                      onChange={() => toggleModel(model.id)}
-                      className="rounded"
-                    />
-                    <span>{model.name}</span>
-                  </label>
-                ))}
-              </div>
+              <ModelSelector
+                models={selectedModels}
+                prompt={prompt}
+                onToggleModel={toggleModel}
+              />
             </div>
 
             {/* Prompt Input */}
             <div className="mb-4">
-              <label className="block text-sm font-medium mb-2">Prompt</label>
+              <div className="flex justify-between">
+                <label className="block text-sm font-medium mb-2">Prompt</label>
+                <span className="text-sm text-gray-500">{`${tokenCount} tokens`}</span>
+              </div>
               <textarea
                 value={prompt}
                 onChange={(e) => setPrompt(e.target.value)}
