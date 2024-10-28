@@ -1,17 +1,15 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Loader2 } from 'lucide-react';
 import debounce from 'lodash/debounce';
-import { calculatePrice, countTokens } from '../utils';
+import { calculatePrice, countTokens, formatPrice } from '../utils';
 
 const ModelSelector = ({ models, prompt, onToggleModel }) => {
-    const [tokenCount, setTokenCount] = useState(0);
     const [calculating, setCalculating] = useState(false);
     const [prices, setPrices] = useState({});
   
     const calculateTokensAndPrices = useCallback(
       debounce(async (newPrompt) => {
         if (!newPrompt) {
-          setTokenCount(0);
           setPrices({});
           setCalculating(false);
           return;
@@ -19,7 +17,6 @@ const ModelSelector = ({ models, prompt, onToggleModel }) => {
   
         try {
           const count = await countTokens(newPrompt, 'gpt-4');
-          setTokenCount(count);
           
           const newPrices = {};
           models.forEach(model => {
@@ -29,7 +26,6 @@ const ModelSelector = ({ models, prompt, onToggleModel }) => {
           setPrices(newPrices);
         } catch (error) {
           console.error('Error calculating tokens:', error);
-          setTokenCount(0);
           setPrices({});
         }
         setCalculating(false);
@@ -47,11 +43,6 @@ const ModelSelector = ({ models, prompt, onToggleModel }) => {
       setCalculating(true);
       calculateTokensAndPrices(prompt);
     }, [prompt, calculateTokensAndPrices]);
-  
-    const formatPrice = (price) => {
-      if (price === null || price === undefined) return 'N/A';
-      return `$${price.toFixed(6)}`;
-    };
   
     return (
       <div className="space-y-2">

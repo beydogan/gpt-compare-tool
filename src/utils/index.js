@@ -15,3 +15,8 @@ export const calculatePrice = (tokenCount, tokenType, modelId) => {
     
     return tokenCount * modelPricing[tokenType];
   };
+
+export const formatPrice = (price) => {
+    if (price === null || price === undefined) return 'N/A';
+    return `$${price.toFixed(6)}`;
+  };

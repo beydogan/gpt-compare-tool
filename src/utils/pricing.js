@@ -4,20 +4,27 @@ export const pricing = {
         completion_token: 0.00003,
       },
     "gpt-4o": {
-        prompt_token: 0.000005,
-        completion_token: 0.000015,
-      },
-      "gpt-4o-2024-05-13": {
-        prompt_token: 0.000005,
-        completion_token: 0.000015,
-      },
-      "gpt-4o-mini": {
-        prompt_token: 0.00000015,
-        completion_token: 0.0000006,
-      },
-      "gpt-4": {
-        prompt_token: 0.000005,
-        completion_token: 0.000015,
-      }
-      
+      prompt_token: 0.000005,
+      completion_token: 0.000015,
+    },
+    "gpt-4o-2024-05-13": {
+      prompt_token: 0.000005,
+      completion_token: 0.000015,
+    },
+    "gpt-4o-mini": {
+      prompt_token: 0.00000015,
+      completion_token: 0.0000006,
+    },
+    "gpt-4": {
+      prompt_token: 0.000005,
+      completion_token: 0.000015,
+    },
+    "o1-preview": {
+      prompt_token: 0.000015,
+      completion_token: 0.00006,
+    },
+    "o1-mini": {
+      prompt_token: 0.000003,
+      completion_token: 0.000012,
+    },
 }

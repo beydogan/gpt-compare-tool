@@ -5,7 +5,7 @@ import { InfoBanner } from './components/InfoBanner';
 import { Alert } from './components/Alert';
 import ModelSelector from './components/ModelSelector';
 import debounce from 'lodash/debounce';
-import { countTokens } from './utils';
+import { countTokens, calculatePrice, formatPrice } from './utils';
 
 const ModelComparer = () => {
   const [apiKey, setApiKey] = useState(() => localStorage.getItem('openai_api_key') || '');
@@ -25,11 +25,11 @@ const ModelComparer = () => {
   });
 
   const availableModels = [
-    { id: 'gpt-4o', name: 'GPT 4o', selected: false},
-    { id: 'gpt-4o-2024-05-13', name: 'GPT 4o 2024-05-13', selected: false},
+    { id: 'gpt-4o', name: 'GPT 4o', selected: true},
+    { id: 'gpt-4o-2024-05-13', name: 'GPT 4o 2024-05-13', selected: true},
     { id: 'gpt-4o-mini', name: 'GPT 4o mini', selected: false},
-    { id: 'gpt-4-turbo-preview', name: 'GPT 4 Turbo', selected: false },
-    { id: 'gpt-4', name: 'GPT 4', selected: false }
+    { id: 'o1-preview', name: 'o1 Preview', selected: false},
+    { id: 'o1-mini', name: 'o1 Mini', selected: false}
   ];
 
   const [selectedModels, setSelectedModels] = useState(() => {
@@ -136,6 +136,7 @@ const ModelComparer = () => {
           if (data.error) {
             return {
               model: model.name,
+              modelId: model.id,
               response: `Error: ${data.error.message || 'Unknown error occurred'}`,
               usage: { completion: data.usage.completion_tokens, prompt: data.usage.prompt_tokens },
               timestamp: new Date().toISOString(),
@@ -145,6 +146,7 @@ const ModelComparer = () => {
 
           return {
             model: model.name,
+            modelId: model.id,
             response: data.choices[0]?.message?.content || 'No response content',
             usage: { completion: data.usage.completion_tokens, prompt: data.usage.prompt_tokens },
             timestamp: new Date().toISOString(),
@@ -153,6 +155,7 @@ const ModelComparer = () => {
         } catch (error) {
           return {
             model: model.name,
+            modelId: model.id,
             response: `Error: ${error.message || 'Failed to fetch response'}`,
             usage: { completion: 0, prompt: 0 },
             timestamp: new Date().toISOString(),
@@ -293,7 +296,15 @@ const ModelComparer = () => {
               </h2>
               {(selectedHistoryItem?.results || results).map((result, index) => (
                 <div key={index} className="mb-6 last:mb-0">
-                  <h3 className="font-semibold text-lg mb-2">{result.model}</h3>
+                  <div className="flex justify-between ">
+                    <h3 className="font-semibold text-lg mb-2">{result.model}</h3>
+                    <span className="text-sm text-gray-500">
+                      {
+                        formatPrice(calculatePrice(result.usage.completion, "completion_token", result.modelId) +
+                        calculatePrice(result.usage.prompt, "prompt_token", result.modelId))
+                      }
+                    </span>
+                  </div>
                   <div className={`p-4 rounded whitespace-pre-wrap ${
                     result.isError ? 'bg-red-50 text-red-700' : 'bg-gray-50'
                   }`}>
